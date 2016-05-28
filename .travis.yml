@@ -17,7 +17,7 @@ install:
   - ( cd gap-git && ./configure --with-gmp=system && make && make bootstrap-pkg-minimal)
   - ( cd gap-git/pkg && wget http://www.gap-system.org/pub/gap/gap4/tar.bz2/packages/atlasrep1r5p0.tar.bz2 && tar -xf atlasrep1r5p0.tar.bz2 )
   - ( cd gap-git/pkg && git clone --depth=2 https://github.com/gap-packages/io && cd io && ./autogen.sh && ./configure && make )
-  - ( cd gap-git/pkg && git clone --depth=2 https://github.com/gap-system/gap-packages/ferret && cd ferret && ./autogen.sh && ./configure && make )
+  - ( cd gap-git/pkg && git clone --depth=2 https://github.com/gap-packages/ferret && cd ferret && ./autogen.sh && ./configure && make )
   - pwd
   - ln -s $(pwd) gap-git/pkg/images
 
