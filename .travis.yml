@@ -12,15 +12,15 @@ addons:
       - valgrind
 
 install:
-  - git clone --depth=2 https://github.com/gap-system/gap.git gap
+  - git clone --depth=2 https://github.com/gap-system/gap.git gap-git
   - pwd
-  - ( cd gap && ./configure --with-gmp=system && make && make bootstrap-pkg-minimal)
-  - ( cd gap/pkg && wget http://www.gap-system.org/pub/gap/gap4/tar.bz2/packages/atlasrep1r5p0.tar.bz2 && tar -xf atlasrep1r5p0.tar.bz2 )
-  - ( cd gap/pkg && git clone --depth=2 https://github.com/gap-packages/io && cd io && ./autogen.sh && ./configure && make )
-  - ( cd gap/pkg && git clone --depth=2 https://github.com/gap-system/gap-packages/ferret && cd ferret && ./autogen.sh && ./configure && make )
+  - ( cd gap-git && ./configure --with-gmp=system && make && make bootstrap-pkg-minimal)
+  - ( cd gap-git/pkg && wget http://www.gap-system.org/pub/gap/gap4/tar.bz2/packages/atlasrep1r5p0.tar.bz2 && tar -xf atlasrep1r5p0.tar.bz2 )
+  - ( cd gap-git/pkg && git clone --depth=2 https://github.com/gap-packages/io && cd io && ./autogen.sh && ./configure && make )
+  - ( cd gap-git/pkg && git clone --depth=2 https://github.com/gap-system/gap-packages/ferret && cd ferret && ./autogen.sh && ./configure && make )
   - pwd
-  - ln -s $(pwd) gap/pkg/images
+  - ln -s $(pwd) gap-git/pkg/images
 
 script:
-  - gap/bin/gap.sh -l "$(pwd)/gap-root/;" -A tst/testall.g
+  - gap-git/bin/gap.sh -A gap-git/pkg/images/tst/testall.g
 
