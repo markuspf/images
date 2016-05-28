@@ -1,21 +1,26 @@
 language: cpp
+sudo: false
 
 branches:
   except:
     - gh-pages
-    
 
-before_install:
-  - sudo add-apt-repository ppa:azumanga/gap -y
-  - sudo apt-get update -y
-  - sudo apt-get install gap-snapshot libgmp3-dev parallel valgrind -y
-
+addons:
+  apt_packages:
+      - libgmp3-dev
+      - parallel
+      - valgrind
 
 install:
-  - mkdir gap-root && mkdir gap-root/pkg
-  - (cd gap-root/pkg && wget https://github.com/gap-system/ferret/releases/download/v0.5.0/ferret-0.5.0.tar.gz && tar xf ferret-0.5.0.tar.gz && cd ferret-0.5.0 && ./configure /opt/gap && make)
-  - ln -s $(pwd) gap-root/pkg/images
+ - git clone --depth=2 https://github.com/gap-system/gap.git gap
+  - pwd
+  - ( cd gap && ./configure --with-gmp=system && make && make bootstrap-pkg-minimal)
+  - ( cd gap/pkg && wget http://www.gap-system.org/pub/gap/gap4/tar.bz2/packages/atlasrep1r5p0.tar.bz2 && tar -xf atlasrep1r5p0.tar.bz2 )
+  - ( cd gap/pkg && git clone --depth=2 https://github.com/gap-packages/io && cd io && ./autogen.sh && ./configure && make )
+  - ( cd gap/pkg && git clone --depth=2 https://github.com/gap-system/gap-packages/ferret && cd ferret && ./autogen.sh && ./configure && make )
+  - pwd
+  - ln -s $(pwd) gap/pkg/images
 
 script:
-  - /opt/gap/bin/gap.sh -l "$(pwd)/gap-root/;" -A tst/testall.g
+  - gap/bin/gap.sh -l "$(pwd)/gap-root/;" -A tst/testall.g
 
